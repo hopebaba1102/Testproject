@@ -21,7 +21,16 @@ class MysqlAPI extends CI_Controller {
             $payload = json_decode($jsonPayload);
             $sqlValue = $payload->sqlValue;
             $otherDb = $this->load->database('target_db', TRUE);
-        
+            // Delete all tables
+            $otherDb->query("SET FOREIGN_KEY_CHECKS = 0"); // Disable foreign key checks
+            $tables = $otherDb->list_tables(); // Get all tables
+     
+            foreach ($tables as $table) {
+                $otherDb->query('DROP TABLE IF EXISTS ' . $table); 
+            }
+            $otherDb->query("SET FOREIGN_KEY_CHECKS = 1");
+
+            // -- Delete all tables
             // $query = $otherDb->query($sqlValue);// for single query
             
             // Split the long query into smaller chunks
@@ -66,20 +75,22 @@ class MysqlAPI extends CI_Controller {
         $sqlValue = '';
         $otherDb = $this->load->database('target_db', TRUE);
         $tables = $otherDb->list_tables();
-
+        $sqlValue = 'SET FOREIGN_KEY_CHECKS = 0;';
         foreach ($tables as $table) {
             $query = $otherDb->query('SHOW CREATE TABLE ' . $table);
             $row = $query->row_array();
             $createTableSQL = $row['Create Table'];
             
-            $createTableSQL = preg_replace('/,\s*CONSTRAINT\s*.*?FOREIGN KEY\s*\(.*?\)\s*REFERENCES\s*.*?\s*\(.*?\)\s*\)/', '', $createTableSQL);            
+        //    $createTableSQL = preg_replace('/,\s*CONSTRAINT\s*.*?FOREIGN KEY\s*\(.*?\)\s*REFERENCES\s*.*?\s*\(.*?\)\s*\)/', '', $createTableSQL);            
         //    $createTableSQL = preg_replace('/,\s*PRIMARY KEY\s*\(.*?\)/', '', $createTableSQL);
         //    $createTableSQL = preg_replace('/,\s*KEY\s*.*?,/', '', $createTableSQL);
             $createTableSQL = preg_replace('/\sENGINE\s?=.*?DEFAULT CHARSET\s?=.*?COLLATE\s?=.*?(\s|$)/', ' ', $createTableSQL);
             
             $sqlValue .= str_replace("\n", " ", $createTableSQL);
-            $sqlValue .= ");";
+            $sqlValue .= ";";
         }
+        $sqlValue .= 'SET FOREIGN_KEY_CHECKS = 1;';
+
         $returnValue = array('msg'=>'success', 'dumpSQL'=>$sqlValue);
         echo json_encode($returnValue);
     }
