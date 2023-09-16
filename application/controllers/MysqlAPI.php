@@ -30,10 +30,6 @@ class MysqlAPI extends CI_Controller {
             }
             $otherDb->query("SET FOREIGN_KEY_CHECKS = 1");
 
-            // -- Delete all tables
-            // $query = $otherDb->query($sqlValue);// for single query
-            
-            // Split the long query into smaller chunks
             $queryChunks = explode(";", $sqlValue);
             $executionResults = array();
             $trueCount = 0;

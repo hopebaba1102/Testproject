@@ -53,10 +53,18 @@ $route['default_controller'] = 'Welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-//cistpm routes...
+// mysql routes...
 $route['api/mysqlquery']['GET'] = 'MysqlAPI/execQuery';
 $route['api/mysqlquery']['POST'] = 'MysqlAPI/execQuery';
 $route['api/mysqldump']['GET'] = 'MysqlAPI/dumpToSQL';
+// graph routes
+$route['api/addGraph']['POST'] = 'GraphController/addGraph';
+$route['api/saveGraph']['POST'] = 'GraphController/saveGraph';
+$route['api/deleteGraph']['POST'] = 'GraphController/deleteGraph';
+$route['api/deleteAllGraphs']['POST'] = 'GraphController/deleteAllGraphs';
+$route['api/getGraph']['POST'] = 'GraphController/getGraph';
+$route['api/getAllGraphs']['POST'] = 'GraphController/getAllGraphs';
+$route['api/getAllGraphs']['GET'] = 'GraphController/getAllGraphs';
 
 //cistpm routes...
 $route['signup']['GET'] = 'Signup/index';
