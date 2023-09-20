@@ -20,7 +20,34 @@ class MysqlAPI extends CI_Controller {
             $jsonPayload = $this->input->raw_input_stream;
             $payload = json_decode($jsonPayload);
             $sqlValue = $payload->sqlValue;
+            /*IF
             $otherDb = $this->load->database('target_db', TRUE);
+            *///ELSE
+            $config = $payload->connectConfig;
+            $this->load->database();
+            $database_config = array(
+                'dsn'      => '',
+                'hostname' => $config->hostname,
+                'username' => $config->username,
+                'password' => $config->password,
+                'database' => $config->database,
+                'dbdriver' => 'mysqli',
+                'dbprefix' => '',
+                'pconnect' => FALSE,
+                'db_debug' => FALSE,
+                'cache_on' => FALSE,
+                'cachedir' => '',
+                'char_set' => 'utf8',
+                'dbcollat' => 'utf8_general_ci',
+                'swap_pre' => '',
+                'encrypt'  => FALSE,
+                'compress' => FALSE,
+                'stricton' => FALSE,
+                'failover' => array(),
+                'save_queries' => TRUE
+            );
+            $otherDb = $this->load->database($database_config, TRUE);
+            //ENDIF
             // Delete all tables
             $otherDb->query("SET FOREIGN_KEY_CHECKS = 0"); // Disable foreign key checks
             $tables = $otherDb->list_tables(); // Get all tables
@@ -69,7 +96,37 @@ class MysqlAPI extends CI_Controller {
 
     public function dumpToSQL(){
         $sqlValue = '';
+        /*IF
         $otherDb = $this->load->database('target_db', TRUE);
+        *///ELSE
+        $jsonPayload = $this->input->raw_input_stream;
+        $payload = json_decode($jsonPayload);
+        $config = $payload->connectConfig;
+        $this->load->database();
+        $database_config = array(
+            'dsn'      => '',
+            'hostname' => $config->hostname,
+            'username' => $config->username,
+            'password' => $config->password,
+            'database' => $config->database,
+            'dbdriver' => 'mysqli',
+            'dbprefix' => '',
+            'pconnect' => FALSE,
+            'db_debug' => FALSE,
+            'cache_on' => FALSE,
+            'cachedir' => '',
+            'char_set' => 'utf8',
+            'dbcollat' => 'utf8_general_ci',
+            'swap_pre' => '',
+            'encrypt'  => FALSE,
+            'compress' => FALSE,
+            'stricton' => FALSE,
+            'failover' => array(),
+            'save_queries' => TRUE
+        );
+        $otherDb = $this->load->database($database_config, TRUE);
+        //ENDIF
+        
         $tables = $otherDb->list_tables();
         $sqlValue = 'SET FOREIGN_KEY_CHECKS = 0;';
         foreach ($tables as $table) {

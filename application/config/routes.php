@@ -56,7 +56,7 @@ $route['translate_uri_dashes'] = FALSE;
 // mysql routes...
 $route['api/mysqlquery']['GET'] = 'MysqlAPI/execQuery';
 $route['api/mysqlquery']['POST'] = 'MysqlAPI/execQuery';
-$route['api/mysqldump']['GET'] = 'MysqlAPI/dumpToSQL';
+$route['api/mysqldump']['POST'] = 'MysqlAPI/dumpToSQL';
 // graph routes
 $route['api/addGraph']['POST'] = 'GraphController/addGraph';
 $route['api/saveGraph']['POST'] = 'GraphController/saveGraph';
@@ -65,6 +65,15 @@ $route['api/deleteAllGraphs']['POST'] = 'GraphController/deleteAllGraphs';
 $route['api/getGraph']['POST'] = 'GraphController/getGraph';
 $route['api/getAllGraphs']['POST'] = 'GraphController/getAllGraphs';
 $route['api/getAllGraphs']['GET'] = 'GraphController/getAllGraphs';
+
+// application routes
+$route['api/addApplication']['POST'] = 'ApplicationController/addApplication';
+$route['api/saveApplication']['POST'] = 'ApplicationController/saveApplication';
+$route['api/deleteApplication']['POST'] = 'ApplicationController/deleteApplication';
+$route['api/deleteAllApplications']['POST'] = 'ApplicationController/deleteAllApplications';
+$route['api/getApplication']['POST'] = 'ApplicationController/getApplication';
+$route['api/getAllApplications']['POST'] = 'ApplicationController/getAllApplications';
+$route['api/getAllApplications']['GET'] = 'ApplicationController/getAllApplications';
 
 //cistpm routes...
 $route['signup']['GET'] = 'Signup/index';
